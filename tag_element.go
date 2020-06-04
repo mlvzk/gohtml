@@ -93,6 +93,8 @@ func (e *tagElement) write(bf *formattedBuffer, isPreviousNodeInline bool) bool 
 			if err != nil {
 				panic(err)
 			}
+			e.isRaw = true
+			text.text = "\n" + text.text + "\n"
 		}
 	}
 
