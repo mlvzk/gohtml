@@ -1,6 +1,10 @@
 package gohtml
 
-import "bytes"
+import (
+	"bytes"
+
+	"github.com/ditashi/jsbeautifier-go/jsbeautifier"
+)
 
 // A tagElement represents a tag element of an HTML document.
 type tagElement struct {
@@ -59,8 +63,39 @@ func (e *tagElement) isChildrenInline() bool {
 	return isInline
 }
 
+var jsbeautifierOpts = map[string]interface{}{
+	"indent_size":               4,
+	"indent_char":               " ",
+	"indent_with_tabs":          false,
+	"preserve_newlines":         true,
+	"max_preserve_newlines":     10,
+	"space_in_paren":            false,
+	"space_in_empty_paren":      false,
+	"e4x":                       false,
+	"jslint_happy":              false,
+	"space_after_anon_function": false,
+	"brace_style":               "collapse",
+	"keep_array_indentation":    false,
+	"keep_function_indentation": false,
+	"eval_code":                 false,
+	"unescape_strings":          false,
+	"wrap_line_length":          0,
+	"break_chained_methods":     false,
+	"end_with_newline":          false,
+}
+
 // write writes a tag to the buffer.
 func (e *tagElement) write(bf *formattedBuffer, isPreviousNodeInline bool) bool {
+	if len(e.children) == 1 && e.tagName == "script" {
+		if text, ok := e.children[0].(*textElement); ok {
+			var err error
+			text.text, err = jsbeautifier.Beautify(&text.text, jsbeautifierOpts)
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
+
 	if e.isRaw {
 		if e.parent != nil && !e.parent.isRaw {
 			bf.writeLineFeed()

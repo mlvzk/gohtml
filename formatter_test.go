@@ -3,7 +3,7 @@ package gohtml
 import "testing"
 
 const (
-	unformattedHTML = `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/></body></html> <!-- aaa -->`
+	unformattedHTML = `<!DOCTYPE html><html><head><title>This is a title.</title></head><body><p>Line1<br>Line2</p><br/><script>alert('test');</script></body></html> <!-- aaa -->`
 	formattedHTML   = `<!DOCTYPE html>
 <html>
   <head>
@@ -18,6 +18,9 @@ const (
       Line2
     </p>
     <br/>
+    <script>
+      alert('test');
+    </script>
   </body>
 </html>
 <!-- aaa -->`
@@ -53,9 +56,12 @@ func TestFormatWithLineNo(t *testing.T) {
 12        Line2
 13      </p>
 14      <br/>
-15    </body>
-16  </html>
-17  <!-- aaa -->`
+15      <script>
+16        alert('test');
+17      </script>
+18    </body>
+19  </html>
+20  <!-- aaa -->`
 	if actual != expected {
 		t.Errorf("Invalid result. [expected: %s][actual: %s]", expected, actual)
 	}
