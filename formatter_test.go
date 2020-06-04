@@ -20,7 +20,7 @@ const (
     <br/>
     <script>
 if (1) {
-    alert('test');
+  alert('test');
 }
 </script>
   </body>

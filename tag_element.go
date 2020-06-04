@@ -64,7 +64,7 @@ func (e *tagElement) isChildrenInline() bool {
 }
 
 var jsbeautifierOpts = map[string]interface{}{
-	"indent_size":               4,
+	"indent_size":               2,
 	"indent_char":               " ",
 	"indent_with_tabs":          false,
 	"preserve_newlines":         true,
